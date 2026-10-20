@@ -40,3 +40,29 @@ if (!motionPreference.matches && 'IntersectionObserver' in window) {
  });
 }
 motionPreference.addEventListener('change', stopReveals);
+
+const helloText = document.querySelector('#hello-typed');
+if (helloText) {
+ const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
+ let helloTimer;
+ let position = 0;
+ let deleting = false;
+ const word = 'Hello';
+ function tickHello() {
+  position += deleting ? -1 : 1;
+  helloText.textContent = word.slice(0, position);
+  let delay = deleting ? 100 : 180;
+  if (position === word.length) { deleting = true; delay = 2400; }
+  else if (position === 0) { deleting = false; delay = 800; }
+  helloTimer = window.setTimeout(tickHello, delay);
+ }
+ function resetHello() {
+  window.clearTimeout(helloTimer);
+  helloText.textContent = word;
+  position = word.length;
+  deleting = true;
+  if (!preference.matches) helloTimer = window.setTimeout(tickHello, 2400);
+ }
+ preference.addEventListener('change', resetHello);
+ resetHello();
+}

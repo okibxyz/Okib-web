@@ -68,6 +68,6 @@
 @media(prefers-reduced-motion:reduce){.reveal-pending{opacity:1;translate:none;transition:none}.digital-space .hero::before,.digital-space .hero::after{animation:none}}
 
 /* Rotate only the decorative portrait orbit, keeping the photo still. */
-@media(prefers-reduced-motion:no-preference){.portrait-orbit{animation:portrait-orbit-turn 45s linear infinite}}
+@media(prefers-reduced-motion:no-preference){.portrait-orbit{animation:portrait-orbit-turn 60s linear infinite}}
 @keyframes portrait-orbit-turn{from{transform:rotate(-25deg)}to{transform:rotate(335deg)}}
 @media(prefers-reduced-motion:reduce){.portrait-orbit{animation:none}}

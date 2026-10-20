@@ -66,3 +66,23 @@ if (helloText) {
  preference.addEventListener('change', resetHello);
  resetHello();
 }
+
+const sageShapes = document.querySelectorAll('.sage-shape');
+if (sageShapes.length) {
+ const sageMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+ let sageFrame = 0;
+ function paintSage() {
+  sageFrame = 0;
+  const progress = window.scrollY / Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+  sageShapes.forEach((shape, index) => {
+   shape.style.transform = sageMotion.matches ? 'none' : 'translate3d(0,' + (progress * (index === 0 ? -140 : -290)) + 'px,0)';
+  });
+ }
+ function queueSage() {
+  if (!sageMotion.matches && !sageFrame) sageFrame = window.requestAnimationFrame(paintSage);
+ }
+ window.addEventListener('scroll', queueSage, {passive:true});
+ window.addEventListener('resize', queueSage, {passive:true});
+ sageMotion.addEventListener('change', paintSage);
+ paintSage();
+}

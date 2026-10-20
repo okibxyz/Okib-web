@@ -71,3 +71,9 @@
 @media(prefers-reduced-motion:no-preference){.portrait-orbit{animation:portrait-orbit-turn 60s linear infinite}}
 @keyframes portrait-orbit-turn{from{transform:rotate(-25deg)}to{transform:rotate(335deg)}}
 @media(prefers-reduced-motion:reduce){.portrait-orbit{animation:none}}
+
+.hello-heading{display:flex;align-items:baseline;gap:.3em;min-height:1.4em}
+.hello-cursor{width:2px;height:.85em;background:currentColor;margin-left:2px}
+@media(prefers-reduced-motion:no-preference){.hello-cursor{animation:hello-blink 1s step-end infinite}}
+@keyframes hello-blink{50%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.hello-cursor{display:none}}

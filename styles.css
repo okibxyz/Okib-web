@@ -66,3 +66,8 @@
 @keyframes banner-drift{from{transform:rotate(-16deg) translate(0,0)}to{transform:rotate(-10deg) translate(3%,-5%)}}
 @keyframes banner-flow{from{transform:rotate(-24deg) translate(0,0)}to{transform:rotate(-18deg) translate(-3%,-4%)}}
 @media(prefers-reduced-motion:reduce){.reveal-pending{opacity:1;translate:none;transition:none}.digital-space .hero::before,.digital-space .hero::after{animation:none}}
+
+/* Rotate only the decorative portrait orbit, keeping the photo still. */
+@media(prefers-reduced-motion:no-preference){.portrait-orbit{animation:portrait-orbit-turn 30s linear infinite}}
+@keyframes portrait-orbit-turn{from{transform:rotate(-25deg)}to{transform:rotate(335deg)}}
+@media(prefers-reduced-motion:reduce){.portrait-orbit{animation:none}}

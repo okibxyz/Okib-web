@@ -52,3 +52,17 @@
 /* Crop the baked-in pale border from the reference photograph. */
 .contact-image{background-image:url("leaves.webp");background-size:112% 112%;background-position:center;background-repeat:no-repeat}
 .contact-image img{display:none}
+
+/* Subtle motion with a fully static reduced-motion alternative. */
+@media(prefers-reduced-motion:no-preference){
+ .digital-space .hero::before{animation:banner-drift 18s ease-in-out infinite alternate}
+ .digital-space .hero::after{animation:banner-flow 22s ease-in-out infinite alternate}
+ .reveal-pending{opacity:0;translate:0 18px;transition:opacity .65s ease,translate .65s ease}
+ .reveal-pending.reveal-visible{opacity:1;translate:0 0}
+ .contact-links a{transition:translate .22s ease}
+ .contact-links a:hover,.contact-links a:focus-visible{translate:0 -4px}
+ .contact-links a:focus-visible .contact-icon{background:#cbd6b9}
+}
+@keyframes banner-drift{from{transform:rotate(-16deg) translate(0,0)}to{transform:rotate(-10deg) translate(3%,-5%)}}
+@keyframes banner-flow{from{transform:rotate(-24deg) translate(0,0)}to{transform:rotate(-18deg) translate(-3%,-4%)}}
+@media(prefers-reduced-motion:reduce){.reveal-pending{opacity:1;translate:none;transition:none}.digital-space .hero::before,.digital-space .hero::after{animation:none}}

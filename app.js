@@ -11,3 +11,32 @@ function updateNavigation() { let current = sections[0]; for (const section of s
 window.addEventListener('scroll', updateNavigation, {passive:true});
 updateNavigation();
 document.querySelector('#year').textContent = new Date().getFullYear();
+
+const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+const revealTargets = [...document.querySelectorAll('.about-copy, .portrait-wrap, .timeline-item, .paper, .contact-image, .contact-copy, .experience > h2, .publications > .section-heading')];
+let revealObserver;
+function stopReveals() {
+ if (revealObserver) revealObserver.disconnect();
+ revealTargets.forEach(element => element.classList.remove('reveal-pending', 'reveal-visible'));
+}
+if (!motionPreference.matches && 'IntersectionObserver' in window) {
+ revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+   if (entry.isIntersecting) {
+    entry.target.classList.add('reveal-visible');
+    revealObserver.unobserve(entry.target);
+   }
+  });
+ }, {threshold: 0.08});
+ revealTargets.forEach(element => {
+  if (element.getBoundingClientRect().top > window.innerHeight) {
+   element.classList.add('reveal-pending');
+   revealObserver.observe(element);
+  }
+ });
+ document.addEventListener('focusin', event => {
+  const target = event.target.closest('.reveal-pending');
+  if (target) target.classList.add('reveal-visible');
+ });
+}
+motionPreference.addEventListener('change', stopReveals);

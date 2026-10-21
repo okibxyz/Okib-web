@@ -86,3 +86,5 @@ body{isolation:isolate}
 .sage-shape-two{width:48vw;height:55vw;max-width:700px;max-height:800px;left:-27vw;top:62vh;background:radial-gradient(ellipse,#a9b8871a,transparent 70%)}
 @media(max-width:760px){.sage-shape-one{width:85vw;height:100vw;right:-53vw}.sage-shape-two{width:90vw;height:110vw;left:-58vw}}
 @media(prefers-reduced-motion:reduce){.sage-shape{transform:none!important;will-change:auto}}
+
+.contact-icon svg{display:block;width:26px;height:26px;flex-shrink:0;color:var(--ink)}

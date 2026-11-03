@@ -13,6 +13,8 @@ jobs:
   cleanup:
     runs-on: ubuntu-latest
     steps:
+      - name: Let the Pages deployment settle before pruning history
+        run: sleep 75
       - name: Remove historical github-pages deployment records
         env:
           GH_TOKEN: ${{ github.token }}

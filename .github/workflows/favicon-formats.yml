@@ -7,6 +7,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+  pages: write
 jobs:
   generate:
     runs-on: ubuntu-latest
@@ -33,3 +34,7 @@ jobs:
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "Generate PNG and ICO versions of tree favicon"
           git push
+      - name: Rebuild GitHub Pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST repos/${{ github.repository }}/pages/builds

@@ -44,9 +44,9 @@ if (helloText) {
  function tickHello() {
   position += deleting ? -1 : 1;
   helloText.textContent = word.slice(0, position);
-  let delay = deleting ? 100 : 180;
-  if (position === word.length) { deleting = true; delay = 2400; }
-  else if (position === 0) { deleting = false; delay = 800; }
+  let delay = deleting ? 220 : 350;
+  if (position === word.length) { deleting = true; delay = 5000; }
+  else if (position === 0) { deleting = false; delay = 1600; }
   helloTimer = window.setTimeout(tickHello, delay);
  }
  function resetHello() {
@@ -54,7 +54,7 @@ if (helloText) {
   helloText.textContent = word;
   position = word.length;
   deleting = true;
-  if (!preference.matches) helloTimer = window.setTimeout(tickHello, 2400);
+  if (!preference.matches) helloTimer = window.setTimeout(tickHello, 5000);
  }
  preference.addEventListener('change', resetHello);
  resetHello();

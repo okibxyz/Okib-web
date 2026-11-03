@@ -1,11 +1,4 @@
-const menu = document.querySelector('.menu');
-const navigation = document.querySelector('#navigation');
-function closeMenu() { menu.setAttribute('aria-expanded', 'false'); menu.setAttribute('aria-label', 'Open navigation'); navigation.classList.remove('open'); }
-menu.addEventListener('click', () => { const open = menu.getAttribute('aria-expanded') !== 'true'; menu.setAttribute('aria-expanded', String(open)); menu.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation'); navigation.classList.toggle('open', open); });
-navigation.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
-document.addEventListener('keydown', event => { if (event.key === 'Escape' && menu.getAttribute('aria-expanded') === 'true') { closeMenu(); menu.focus(); } });
-window.matchMedia('(min-width: 761px)').addEventListener('change', event => { if(event.matches) closeMenu(); });
-const navLinks = [...navigation.querySelectorAll('a')];
+const navLinks = [...document.querySelectorAll('.bottom-dock a')];
 const sections = [...document.querySelectorAll('main > section')];
 function updateNavigation() { let current = sections[0]; for (const section of sections) { if (section.getBoundingClientRect().top <= 160) current = section; } if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 5) current = sections.at(-1); navLinks.forEach(link => { const active = link.hash === '#' + current.id; link.classList.toggle('active', active); if (active) link.setAttribute('aria-current', 'location'); else link.removeAttribute('aria-current'); }); }
 window.addEventListener('scroll', updateNavigation, {passive:true});
@@ -86,3 +79,21 @@ if (sageShapes.length) {
  sageMotion.addEventListener('change', paintSage);
  paintSage();
 }
+
+const dockToggle = document.querySelector('.dock-toggle');
+const quickDock = document.querySelector('.bottom-dock');
+function closeQuickDock() {
+ quickDock.classList.remove('is-open');
+ dockToggle.setAttribute('aria-expanded','false');
+ dockToggle.setAttribute('aria-label','Open navigation');
+}
+dockToggle.addEventListener('click',()=>{
+ const open = dockToggle.getAttribute('aria-expanded') !== 'true';
+ quickDock.classList.toggle('is-open',open);
+ dockToggle.setAttribute('aria-expanded',String(open));
+ dockToggle.setAttribute('aria-label',open?'Close navigation':'Open navigation');
+});
+quickDock.querySelectorAll('a').forEach(link=>link.addEventListener('click',closeQuickDock));
+document.addEventListener('click',event=>{if(!quickDock.contains(event.target)&&!dockToggle.contains(event.target))closeQuickDock();});
+document.addEventListener('keydown',event=>{if(event.key==='Escape'&&dockToggle.getAttribute('aria-expanded')==='true'){closeQuickDock();dockToggle.focus();}});
+window.matchMedia('(max-width:760px)').addEventListener('change',closeQuickDock);

@@ -187,3 +187,20 @@ html{scroll-padding-top:20px}
 /* Local demo: Bengali writing at 11px on all screen sizes. */
 .random-page .writing h2,
 .random-page .writing p{font-size:11px}
+
+/* Demo: consistent main heading weight and responsive size. */
+.digital-space .about h2.hello-heading,
+.experience > h2,
+.publications .section-heading h2,
+.contact h2{font-family:Roboto,Arial,Helvetica,sans-serif;font-size:28px;font-weight:600;letter-spacing:-.7px;line-height:1.25}
+@media(max-width:760px){
+ .digital-space .about h2.hello-heading,
+ .experience > h2,
+ .publications .section-heading h2,
+ .contact h2{font-size:24px;font-weight:600;letter-spacing:-.5px}
+}
+
+/* Demo: Bengali writing at 12px, with justified paragraphs. */
+.random-page .writing h2,
+.random-page .writing p{font-size:12px}
+.random-page .writing p{text-align:justify;text-justify:inter-word;text-align-last:start}

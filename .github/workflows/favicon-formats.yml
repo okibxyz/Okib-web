@@ -1,0 +1,35 @@
+name: Generate favicon formats
+on:
+  push:
+    paths:
+      - favicon.svg
+      - .github/workflows/favicon-formats.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install cairosvg pillow
+      - name: Render original SVG at favicon sizes
+        run: |
+          python - <<'PY'
+          import cairosvg
+          from PIL import Image
+          for size, name in [(32, 'favicon-32.png'), (180, 'apple-touch-icon.png'), (256, 'favicon-256.png')]:
+              cairosvg.svg2png(url='favicon.svg', write_to=name, output_width=size, output_height=size)
+          Image.open('favicon-256.png').save('favicon.ico', sizes=[(16,16),(32,32),(48,48),(64,64),(128,128),(256,256)])
+          PY
+      - name: Commit generated icons
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add favicon.ico favicon-32.png favicon-256.png apple-touch-icon.png
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Generate PNG and ICO versions of tree favicon"
+          git push

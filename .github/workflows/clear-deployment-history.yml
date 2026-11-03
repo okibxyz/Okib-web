@@ -1,0 +1,70 @@
+name: Clear old deployment history
+on:
+  push:
+    paths:
+      - .github/workflows/clear-deployment-history.yml
+permissions:
+  contents: read
+  deployments: write
+concurrency:
+  group: deployment-history-cleanup
+  cancel-in-progress: false
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Remove historical github-pages deployment records
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          python3 - <<'PY'
+          import json, os, urllib.request
+          repo = os.environ['REPOSITORY']
+          base = 'https://api.github.com/repos/' + repo
+          headers = {'Authorization': 'Bearer ' + os.environ['GH_TOKEN'], 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28'}
+          def api(path, method='GET', body=None):
+              request = urllib.request.Request(base + path, headers=headers, method=method, data=None if body is None else json.dumps(body).encode())
+              with urllib.request.urlopen(request) as response:
+                  data = response.read()
+                  return json.loads(data) if data else None
+          records = []
+          page = 1
+          while True:
+              batch = api('/deployments?environment=github-pages&per_page=100&page=' + str(page))
+              records.extend(batch)
+              if len(batch) < 100:
+                  break
+              page += 1
+          records.sort(key=lambda item: item['created_at'], reverse=True)
+          if not records:
+              print('No deployment records found.')
+              raise SystemExit(0)
+          # Keep the newest successful deployment, plus any builds in progress.
+          keep = set()
+          latest_success = None
+          states = {}
+          for deployment in records:
+              statuses = api('/deployments/' + str(deployment['id']) + '/statuses?per_page=1')
+              state = statuses[0]['state'] if statuses else 'inactive'
+              states[deployment['id']] = state
+              if state in ('queued', 'pending', 'in_progress'):
+                  keep.add(deployment['id'])
+              if state == 'success' and latest_success is None:
+                  latest_success = deployment['id']
+                  keep.add(latest_success)
+          if latest_success is None:
+              raise RuntimeError('No successful deployment found; refusing to delete history.')
+          deleted = 0
+          for deployment in records:
+              identifier = deployment['id']
+              if identifier in keep:
+                  continue
+              endpoint = '/deployments/' + str(identifier)
+              if states[identifier] != 'inactive':
+                  api(endpoint + '/statuses', 'POST', {'state': 'inactive', 'auto_inactive': False, 'description': 'Historical record cleanup requested by repository owner'})
+              api(endpoint, 'DELETE')
+              deleted += 1
+          print('Deleted historical deployment records:', deleted)
+          print('Retained current or running deployment records:', sorted(keep))
+          PY

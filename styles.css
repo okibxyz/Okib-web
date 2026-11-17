@@ -1648,3 +1648,20 @@ body .contact-image > span { color:#ffffff!important; }
 /* Random lines typography. */
 .random-page .writing h2,
 .random-page .writing p { font-size:13px; }
+
+/* v3 banner: single-line typewriter artwork with a decorative white poppy. */
+.depth-demo .digital-space .hero { height:550px; padding:35px 5%; }
+body .digital-space .hero h1.name-png {
+ transform:none; width:min(360px,44%); margin:auto; line-height:1;
+ position:relative; left:-5%; max-width:none;
+}
+.name-png img { width:100%; height:auto; }
+.digital-space .hero .banner-flower {
+ position:absolute; z-index:2; width:240px; height:360px; object-fit:contain;
+ right:3%; bottom:-25px; pointer-events:none; transform:rotate(9deg);
+}
+@media(max-width:760px) {
+ .depth-demo .digital-space .hero { height:auto; aspect-ratio:1.305; min-height:0; padding:30px 0; }
+ body .digital-space .hero h1.name-png { width:54%; left:-4%; transform:none; }
+ .digital-space .hero .banner-flower { width:115px; height:173px; right:-20px; bottom:-15px; transform:rotate(5deg); }
+}

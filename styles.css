@@ -1625,3 +1625,26 @@ html {
   background-size: 320px 320px;
 }
 .random-page .writing p { color: #34412e; }
+
+/* Typography only: preserve the original palette, surfaces, icons, and effects. */
+body { color:#000000; }
+body h1,body h2,body h3,body p,body li,
+body .digital-space .about .about-copy p,
+body .digital-space .about .about-copy p.lead,
+body .date,body .kind,body .paper-index,body .paper-meta,
+body .paper-meta span,body .paper-year,body .organization span,
+body .courses span,body .authors strong,body .publication-toolbar,
+body .publication-toolbar b,body footer,body footer a,
+body .bottom-dock a,body .bottom-dock a.active,
+body.random-page .writing p { color:#000000!important; }
+body .digital-space .hero h1,
+body .contact-image p,
+body .contact-image > span { color:#ffffff!important; }
+
+/* Remove the Experience section's outer background box. */
+.depth-demo .experience { background:transparent; border:0; border-radius:0; }
+.depth-demo .timeline-item::before { box-shadow:0 0 0 5px #f3f4ef; }
+
+/* Random lines typography. */
+.random-page .writing h2,
+.random-page .writing p { font-size:13px; }
